@@ -240,50 +240,40 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
             <td>
               <table id="deck-0" align="center">
                 <tr><th>Example card</th></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
                 <tr><td>definition</td></tr>
+                <tr><td>example</td></tr>
                 <tr><td><a href="#" onClick="playCard('Cardname')" class="btn">Remove</a></td></tr>
               </table>
             </td>
             <td>
               <table id="deck-1" align="center">
                 <tr><th>Example card</th></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
                 <tr><td>definition</td></tr>
+                <tr><td>example</td></tr>
                 <tr><td><a href="#" onClick="playCard('Cardname')" class="btn disabled">Submit</a></td></tr>
               </table>
             </td>
             <td>
               <table id="deck-2" align="center">
                 <tr><th>Example card</th></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
                 <tr><td>definition</td></tr>
+                <tr><td>example</td></tr>
                 <tr><td><a href="#" onClick="playCard('Cardname')" class="btn disabled">Submit</a></td></tr>
               </table>
             </td>
             <td>
               <table id="deck-3" align="center">
                 <tr><th>Example card</th></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
                 <tr><td>definition</td></tr>
+                <tr><td>example</td></tr>
                 <tr><td><a href="#" onClick="playCard('Cardname')" class="btn disabled">Submit</a></td></tr>
               </table>
             </td>
             <td>
               <table id="deck-4" align="center">
                 <tr><th>Example card</th></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
-                <tr><td>synonyms</td></tr>
                 <tr><td>definition</td></tr>
+                <tr><td>example</td></tr>
                 <tr><td><a href="#" onClick="playCard('Cardname')" class="btn disabled">Submit</a></td></tr>
               </table>
             </td>
@@ -330,12 +320,33 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
                     document.getElementById("waiting").style.display = "block";
                   }
                 } else if (keys.includes("evt")) {
-                  if (msg.evt == "start") {
+                  if (msg.evt == "startGame") {
                     document.getElementById("waiting").innerHTML = "<tr><td><h2>Lets begin</h2></td></tr>"
-                    /*setTimeout(function() = {
+                    var nouns = []
+                    msg.cards.forEach(function(noun) {
+                      $.get("https://owlbot.info/api/v2/dictionary/"+noun+"?format=json", function(data) {
+                        definitions = JSON.parse(data).reverse()
+                        var finalDefinition = "No definition found"
+                        definitions.forEach(function(definition) {
+                          if (definition.type == "noun") {
+                            finalDefinition = [noun, definition.definintion, definition.example]
+                          }
+                        })
+                        nouns.push(finalDefinition)
+                      })
+                    })
+                    for ( var i; i >= 5; i++ ) {
+                      var table = document.getElementById("deck-"+i)
+                      var rows = table.rows
+                      rows[0].innerHTML = "<th>"+nouns[i][0]+"</th>"
+                      rows[1].innerHTML = "<td>"+nouns[i][1]+"</td>"
+                      rows[2].innerHTML = "<td>"+nouns[i][2]+"</td>"
+                      rows[3].innerHTML = '<td><a href="#" onClick="playCard(\''nouns[i][0]'\')" class="btn cardbtns">Remove</a></td>'
+                    }
+                    setTimeout(function() {
                       document.getElementById("waiting").style.display = "none";
                       document.getElementById("game").style.display = "block";
-                    }, 2000)*/
+                    }, 2000)
                   }
                 }
               }
