@@ -5,16 +5,8 @@ var os = require('os')
 var dns = require('dns')
 var opn = require('opn')
 var colors = require('colors')
-var mysql = require('sync-mysql')
 
 console.log("Welcome! Starting server".bold.green)
-
-console.log("Attempting to connect to mysql".bold)
-var connection = new mysql({
-  host: 'filipkin.com',
-  user: 'a2a',
-  password: 'password'
-})
 
 console.log("Attempting to open websocket".bold)
 const wss = new WebSocket.Server({ port: 8080 })
@@ -28,7 +20,7 @@ wss.on('connection', function connection(ws, req) {
     console.log(err.toString().bold.red + " from " + ip)
     if(ws == conns[0]) {
       console.log("Server tab closed, reopening".bold.red + " To close server press Close server on server tab".bold.green)
-      opn("http://"+myIp)
+      opn("http://a2a.filipkin.com/server.php?ip="+myIp+"&id="+game.id)
     } else {
       console.log("Client left".bold.red)
     }
@@ -61,7 +53,6 @@ wss.on('connection', function connection(ws, req) {
       }
     } else if (msg.keys.includes("cmd")) {
       if (msg.cmd == "shutdown") {
-        connection.query("DELETE FROM `ips` WHERE `ips`.`code` = '"+game.id+"' ");
         process.exit()
       }
     }
