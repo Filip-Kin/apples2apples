@@ -10,7 +10,7 @@ var mysql = require('sync-mysql')
 console.log("Welcome! Starting server".bold.green)
 
 console.log("Attempting to connect to mysql".bold)
-var connection = new MySql({
+var connection = new mysql({
   host: 'filipkin.com',
   user: 'a2a',
   password: 'password'
