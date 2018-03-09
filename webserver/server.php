@@ -1,3 +1,4 @@
+<?php include("/var/www/analytics.php"); //Just some analytics stuff ?>
 <?php
 ini_set('display_errors', 'Off');
 $ip = $_GET["ip"];
@@ -148,7 +149,6 @@ if (!isset($id) or $id == "") {
     <tr><td><table id="playertable" align="center"><tr><th colspan=2><h3 style="color: white">Player list<h3></th></tr></table><br></td></tr>
     <tr><td id="startGameBtn" style="display:none;"><a href="#" class="btn" onClick="startGame();">Start Game</a></td></tr>
   </table>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script>
     var ws = new WebSocket("ws://<?php echo $ip; ?>:8080")
     ws.onopen = function(event) {
@@ -156,9 +156,7 @@ if (!isset($id) or $id == "") {
     }
     function closeServer() {
       ws.send('{"cmd": "shutdown"}')
-      $.get("removeId.php?id=<?php echo $id; ?>", function(data) {
-      });
-      //window.close()
+      window.close()
     }
     ws.onmessage = function(event) {
       console.log(event.data)

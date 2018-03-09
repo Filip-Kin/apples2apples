@@ -1,10 +1,12 @@
-const WebSocket = require('ws')
+var WebSocket = require('ws')
 var Sentencer = require('sentencer')
 var http = require('http')
 var os = require('os')
 var dns = require('dns')
 var opn = require('opn')
 var colors = require('colors')
+
+var debugOpen = true;
 
 console.log("Welcome! Starting server".bold.green)
 
@@ -34,6 +36,11 @@ wss.on('connection', function connection(ws, req) {
         conns[0] = ws
         game.id = msg.info.id
         ws.send('{"resp": "approved"}')
+        if (debugOpen) {
+          opn("http://a2a.filipkin.com/?id="+game.id)
+          opn("http://a2a.filipkin.com/?id="+game.id)
+          opn("http://a2a.filipkin.com/?id="+game.id)
+        }
       } else if (msg.evt == "client join") {
         var playerid = game.players.length + 1
         var playernames = game.players.map(a => a.name)
