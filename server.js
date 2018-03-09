@@ -14,7 +14,7 @@ console.log("Attempting to open websocket".bold)
 const wss = new WebSocket.Server({ port: 8080 })
 
 game = {"players": []}
-conns = {}
+conns = []
 
 wss.on('connection', function connection(ws, req) {
   const ip = req.connection.remoteAddress
@@ -61,6 +61,20 @@ wss.on('connection', function connection(ws, req) {
     } else if (msg.keys.includes("cmd")) {
       if (msg.cmd == "shutdown") {
         process.exit()
+      } else if (msg.cmd == "startGame") {
+        var first = true
+        conns.forEach( function(conn) {
+          if (first) {
+            conn.send('{"evt": "startGame"}')
+            first = false
+          } else {
+            var nouns = []
+            for ( var i; i <= 5; i++ ) {
+              nouns.push(randNoun())
+            }
+            conn.send('{"evt": "startGame", "cards": ["'nouns.join('", "')'"]}')
+          }
+        })
       }
     }
   })
