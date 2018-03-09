@@ -1,0 +1,4 @@
+# plz ignore node modules
+# k thx bye
+node_modules/
+builds/

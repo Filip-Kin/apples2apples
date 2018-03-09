@@ -1,0 +1,31 @@
+{
+  "name": "apples2apples-server",
+  "version": "1.0.0",
+  "description": "Server for Apples to Apples by Filip",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Filip9696/apples2apples.git"
+  },
+  "keywords": [
+    "apples2apples",
+    "game"
+  ],
+  "author": "Filip9696",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Filip9696/apples2apples/issues"
+  },
+  "homepage": "https://github.com/Filip9696/apples2apples#readme",
+  "dependencies": {
+    "color": "^3.0.0",
+    "colors": "^1.1.2",
+    "mysql-sync": "0.0.5",
+    "opn": "^5.2.0",
+    "sentencer": "^0.1.5",
+    "ws": "^4.1.0"
+  }
+}
