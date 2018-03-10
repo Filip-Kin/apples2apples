@@ -1,0 +1,45 @@
+h1 {
+  color: #c40000;
+  font-size: 70px;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 32px
+}
+
+h3 {
+  font-size: 24px
+}
+
+body {
+  background: #0C9700;
+}
+
+.btn, .btn:link, .btn:visited {
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -ms-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  -webkit-border-radius: 9;
+  -moz-border-radius: 9;
+  border-radius: 9px;
+  font-family: Arial;
+  color: #ffffff;
+  background: #495057;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -ms-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  background: #c40000;
+  color: white;
+  text-decoration: none;
+}

@@ -1,0 +1,46 @@
+h1 {
+  color: #0C9700;
+  font-size: 70px;
+  margin: 0px;
+}
+
+h2 {
+  margin: 0px;
+}
+
+#startGameBtn {
+  transition: opacity linear 1s;
+}
+
+body {
+  background: #C40000
+}
+
+.btn, .btn:link, .btn:visited {
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -ms-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  -webkit-border-radius: 9;
+  -moz-border-radius: 9;
+  border-radius: 9px;
+  font-family: Arial;
+  color: #ffffff;
+  background: #495057;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  width: 100%;
+}
+
+.btn:hover {
+  -webkit-transition: all 1s ease-out;
+  -moz-transition: all 1s ease-out;
+  -ms-transition: all 1s ease-out;
+  -o-transition: all 1s ease-out;
+  transition: all 1s ease-out;
+  background: #0C9700;
+  color: white;
+  text-decoration: none;
+}
