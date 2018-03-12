@@ -72,7 +72,7 @@ wss.on('connection', function connection(ws, req) {
             for ( var i; i <= 5; i++ ) {
               nouns.push(randNoun())
             }
-            conn.send('{"evt": "startGame", "cards": ["'nouns.join('", "')'"]}')
+            conn.send('{"evt": "startGame", "cards": ["'+nouns.join('", "')+'"]}')
           }
         })
       }

@@ -130,10 +130,10 @@ if (isset($_GET["id"]) && $_GET["id"] != "") {
                 } else if (keys.includes("evt")) {
                   if (msg.evt == "start") {
                     document.getElementById("waiting").innerHTML = "<tr><td><h2>Lets begin</h2></td></tr>"
-                    /*setTimeout(function() = {
+                    setTimeout(function() {
                       document.getElementById("waiting").style.display = "none";
                       document.getElementById("game").style.display = "block";
-                    }, 2000)*/
+                    }, 2000)
                   }
                 }
               }
