@@ -5,8 +5,21 @@ var os = require('os')
 var dns = require('dns')
 var opn = require('opn')
 var colors = require('colors')
+var rp = require('request-promise')
 
 var debugOpen = true;
+
+function randNoun() {
+  var noun = Sentencer.make("{{ noun }}")
+  console.log("Randomly generated noun ".bold+noun.bold.green)
+  return noun
+}
+
+function randAdj() {
+  var adjective = Sentencer.make("{{ adjective }}")
+  console.log("Randomly generated adjective ".bold+adjective.bold.red)
+  return adjective
+}
 
 console.log("Welcome! Starting server".bold.green)
 
@@ -15,6 +28,53 @@ const wss = new WebSocket.Server({ port: 8080 })
 
 game = {"players": []}
 conns = []
+
+function synonyms(word) {
+  return new Promise(function(resolve, reject) {
+    var options = {
+      host: 'api.datamuse.com',
+      port: 80,
+      path: '/words?ml=' + encodeURIComponent(word)
+    }
+    var data = ""
+    http.get(options, function(resp) {
+      resp.on('data', function(chunk) {
+        data += chunk
+      })
+      resp.on('end', () => {
+        json = JSON.parse(data)
+        resolve([json[0].word, json[1].word, json[2].word])
+      })
+    }).on("error", function(e) {
+      console.log("Got error: " + e.message)
+    })
+  })
+}
+
+// usage: synonyms(word).then(function(out){})
+
+function definition(word) {
+  return new Promise(function(resolve, reject) {
+    var options = {
+      host: 'owlbot.info',
+      port: 80,
+      path: '/api/v2/dictionary/' + encodeURIComponent(word) + '?format=json'
+    }
+    var data = ""
+    http.get(options, function(resp) {
+      resp.on('data', function(chunk) {
+        data += chunk
+      })
+      resp.on('end', () => {
+        //json = JSON.parse(data)
+        //resolve([json[0].definition, json[0].example])
+        resolve(data)
+      })
+    }).on("error", function(e) {
+      console.log("Got error: " + e.message)
+    })
+  })
+}
 
 wss.on('connection', function connection(ws, req) {
   const ip = req.connection.remoteAddress
@@ -65,64 +125,25 @@ wss.on('connection', function connection(ws, req) {
         var first = true
         conns.forEach( function(conn) {
           if (first) {
-            conn.send('{"evt": "startGame"}')
+            conn.send('{"evt": "startGame", "card": "'+randAdj()+'"}')
             first = false
           } else {
-            var nouns = []
-            for ( var i; i <= 5; i++ ) {
-              nouns.push(randNoun())
-            }
-            conn.send('{"evt": "startGame", "cards": ["'+nouns.join('", "')+'"]}')
+            var nouns = [{ "noun": randNoun() }, { "noun": randNoun()}, { "noun": randNoun()}, { "noun": randNoun()}, { "noun": randNoun()}]
+            nouns.forEach( function(obj){
+              console.log("Getting info for "+obj.noun)
+              synonyms(obj.noun).then(function(out) { obj.synonyms = out })
+              definition(obj.noun, "noun").then(function(out) { 
+                obj.definition = out[0]
+                obj.example = out[1]
+              })
+            })
+            conn.send('{"evt": "startGame", "cards": '+JSON.stringify(nouns)+'}')
           }
         })
       }
     }
   })
 })
-
-function synonyms(word) {
-  console.log("Getting synonyms for ".bold+word.bold.green)
-  return new Promise(function(resolve,reject) {
-    var options = {
-      host: 'api.datamuse.com',
-      port: 80,
-      path: '/words?ml='+word
-    }
-    var data = ""
-    http.get(options, function(resp){
-    resp.on('data', function(chunk){
-      data += chunk
-    })
-    resp.on('end', () => {
-      json = JSON.parse(data)
-      resolve([json[0].word, json[1].word, json[2].word])
-    })
-    }).on("error", function(e){
-      console.log("Got error: " + e.message)
-    })
-  })
-}
-
-// usage: synonyms(word).then(function(out){})
-
-function randNoun() {
-  console.log("Randomly generating noun".bold)
-  return Sentencer.make("{{ noun }}")
-}
-
-function randAdj() {
-  console.log("Randomly generating adjective".bold)
-  return Sentencer.make("{{ adjective }}")
-}
-
-function test() {
-  var noun = randNoun()
-  var adj = randAdj()
-  synonyms(noun).then(function(out){console.log(noun + ": " + out.join(", "))})
-  synonyms(adj).then(function(out){console.log(adj + ": " + out.join(", "))})
-  setTimeout(test, 3000)
-}
-//test()
 
 var myIp = "Failed to detect local ip."
 
