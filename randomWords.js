@@ -1,6 +1,7 @@
 var Sentencer = require('sentencer')
 var gets = require("https").get
 var get = require("http").get
+var colors = require('colors')
 
 function genRandNoun() {
 	var noun = Sentencer.make("{{ noun }}")
@@ -55,16 +56,20 @@ function definition(word, type) {
 				data += chunk
 			})
 			resp.on('end', () => {
-				json = JSON.parse(data)
 				var out = ["No definition found", "No example found"]
-				json.forEach(function(obj) {
-					if(obj.type == type) {
-						out[0] = obj.definition
-						if(obj.example != null) {
-							out[1] = obj.example
+				if (data.includes("<h1>Not Found</h1>")) {
+					console.log("Phew just doged a bullet there! What dictonary has no ".bold.red+word.bold.red+" in it???".bold.red)
+				} else {
+					json = JSON.parse(data)
+					json.forEach(function(obj) {
+						if(obj.type == type) {
+							out[0] = obj.definition
+							if(obj.example != null) {
+								out[1] = obj.example
+							}
 						}
-					}
-				})
+					})
+				}
 				resolve(out)
 			})
 		}).on("error", function(e) {
