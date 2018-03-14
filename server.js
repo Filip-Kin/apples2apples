@@ -1,25 +1,11 @@
 var WebSocket = require('ws')
-var Sentencer = require('sentencer')
-var http = require('http')
-var os = require('os')
-var dns = require('dns')
+var getHostName = require('os').hostname
+var dns = require('dns').lookup
 var opn = require('opn')
 var colors = require('colors')
-var rp = require('request-promise')
+var rw = require('./randomWords')
 
 var debugOpen = true;
-
-function randNoun() {
-  var noun = Sentencer.make("{{ noun }}")
-  console.log("Randomly generated noun ".bold+noun.bold.green)
-  return noun
-}
-
-function randAdj() {
-  var adjective = Sentencer.make("{{ adjective }}")
-  console.log("Randomly generated adjective ".bold+adjective.bold.red)
-  return adjective
-}
 
 console.log("Welcome! Starting server".bold.green)
 
@@ -28,53 +14,6 @@ const wss = new WebSocket.Server({ port: 8080 })
 
 game = {"players": []}
 conns = []
-
-function synonyms(word) {
-  return new Promise(function(resolve, reject) {
-    var options = {
-      host: 'api.datamuse.com',
-      port: 80,
-      path: '/words?ml=' + encodeURIComponent(word)
-    }
-    var data = ""
-    http.get(options, function(resp) {
-      resp.on('data', function(chunk) {
-        data += chunk
-      })
-      resp.on('end', () => {
-        json = JSON.parse(data)
-        resolve([json[0].word, json[1].word, json[2].word])
-      })
-    }).on("error", function(e) {
-      console.log("Got error: " + e.message)
-    })
-  })
-}
-
-// usage: synonyms(word).then(function(out){})
-
-function definition(word) {
-  return new Promise(function(resolve, reject) {
-    var options = {
-      host: 'owlbot.info',
-      port: 80,
-      path: '/api/v2/dictionary/' + encodeURIComponent(word) + '?format=json'
-    }
-    var data = ""
-    http.get(options, function(resp) {
-      resp.on('data', function(chunk) {
-        data += chunk
-      })
-      resp.on('end', () => {
-        //json = JSON.parse(data)
-        //resolve([json[0].definition, json[0].example])
-        resolve(data)
-      })
-    }).on("error", function(e) {
-      console.log("Got error: " + e.message)
-    })
-  })
-}
 
 wss.on('connection', function connection(ws, req) {
   const ip = req.connection.remoteAddress
@@ -125,19 +64,14 @@ wss.on('connection', function connection(ws, req) {
         var first = true
         conns.forEach( function(conn) {
           if (first) {
-            conn.send('{"evt": "startGame", "card": "'+randAdj()+'"}')
+            rw.randAdj().then(function(adj) {
+              conn.send('{"evt": "startGame", "card": '+JSON.stringify(adj)+'}')
+            })
             first = false
           } else {
-            var nouns = [{ "noun": randNoun() }, { "noun": randNoun()}, { "noun": randNoun()}, { "noun": randNoun()}, { "noun": randNoun()}]
-            nouns.forEach( function(obj){
-              console.log("Getting info for "+obj.noun)
-              synonyms(obj.noun).then(function(out) { obj.synonyms = out })
-              definition(obj.noun, "noun").then(function(out) { 
-                obj.definition = out[0]
-                obj.example = out[1]
-              })
+            Promise.all([rw.randNoun(), rw.randNoun(), rw.randNoun(), rw.randNoun(), rw.randNoun()]).then(function(nouns) {
+              conn.send('{"evt":"startGame","cards":' + JSON.stringify(nouns) + '}')
             })
-            conn.send('{"evt": "startGame", "cards": '+JSON.stringify(nouns)+'}')
           }
         })
       }
@@ -147,7 +81,7 @@ wss.on('connection', function connection(ws, req) {
 
 var myIp = "Failed to detect local ip."
 
-dns.lookup(os.hostname(), function (err, add, fam) {
+dns(getHostName(), function (err, add, fam) {
   console.log("Detecting ip".bold)
   myIp = add
   console.log("Ip is ".bold+myIp.bold.green)
