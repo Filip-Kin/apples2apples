@@ -1,9 +1,9 @@
 # Apples 2 Apples
 *No affiliation with THE Apples To Apples*
 
-## Installation
-Download and install [Node.js](https://nodejs.org/en/download/) if you haven't already
-Download from [releases](https://github.com/Filip9696/apples2apples/releases)
-Double click `Run Server` to run the server (*duh*)
-Finally connect players through [the web client](http://apples2apples.tk/)
-# apples2apples
+## Running
+Download [the server](https://github.com/Filip9696/apples2apples/releases/latest)
+Run the downloaded file
+Windows smart screen shows up because I'm not an approved developer, just say allow
+When it starts click allow on the firewall prompt
+Finally connect players through [the web client](http://a2a.filipkin.com/)
