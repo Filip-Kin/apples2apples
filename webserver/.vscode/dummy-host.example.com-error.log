@@ -1,0 +1,8 @@
+[Wed Mar 21 18:51:54.824076 2018] [authz_core:error] [pid 18072:tid 1992] [client ::1:61873] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/
+[Wed Mar 21 18:51:55.179383 2018] [authz_core:error] [pid 18072:tid 1992] [client ::1:61873] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/favicon.ico, referer: http://localhost/
+[Wed Mar 21 18:52:02.705883 2018] [authz_core:error] [pid 18072:tid 1980] [client ::1:61874] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/server.php
+[Wed Mar 21 18:52:02.832993 2018] [authz_core:error] [pid 18072:tid 1980] [client ::1:61874] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/favicon.ico, referer: http://localhost/server.php
+[Wed Mar 21 19:31:51.817560 2018] [authz_core:error] [pid 18072:tid 1968] [client ::1:62975] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/
+[Wed Mar 21 19:47:14.178206 2018] [authz_core:error] [pid 18072:tid 1968] [client ::1:63841] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/
+[Wed Mar 21 19:55:50.789404 2018] [authz_core:error] [pid 18072:tid 1968] [client ::1:64022] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/
+[Wed Mar 21 20:25:37.638711 2018] [authz_core:error] [pid 18072:tid 1968] [client ::1:64982] AH01630: client denied by server configuration: Y:/GitHub/apples2apples/webserver/

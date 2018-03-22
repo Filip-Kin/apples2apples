@@ -1,4 +1,4 @@
-var WebSocket = require('ws')
+var ws = require('ws').Server
 var getHostName = require('os').hostname
 var dns = require('dns').lookup
 var opn = require('opn')
@@ -10,7 +10,7 @@ var debugOpen = true;
 console.log("Welcome! Starting server".bold.green)
 
 console.log("Attempting to open websocket".bold)
-const wss = new WebSocket.Server({ port: 8080 })
+const wss = new ws({ port: 8080 })
 
 game = {"players": []}
 conns = []
